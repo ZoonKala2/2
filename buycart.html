@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سبد خرید - زون کالا</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IRANSans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            animation: slideInUp 0.6s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .cart-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-count {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .clear-cart {
+            background: #ef394e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .clear-cart:hover {
+            background: #d63384;
+            transform: scale(1.05);
+        }
+
+        /* Cart Item */
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.5s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .item-features {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .item-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .discount-badge {
+            background: linear-gradient(135deg, #ef394e, #ff6b7a);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ef394e;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: rgba(239, 57, 78, 0.1);
+            transform: scale(1.2);
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 2px solid #f8f9fa;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .discount-value {
+            color: #28a745;
+        }
+
+        /* Discount Code */
+        .discount-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            border-radius: 12px;
+            border: 2px dashed #667eea;
+        }
+
+        .discount-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .discount-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .discount-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .apply-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .suggested-codes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .code-suggestion {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-suggestion:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Checkout Button */
+        .checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .checkout-btn:hover::before {
+            left: 100%;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Recommendations */
+        .recommendations {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .recommendations h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recommended-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .recommended-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recommended-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .recommended-item .item-image {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            font-size: 30px;
+        }
+
+        .recommended-item .item-name {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .recommended-item .item-price {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-cart-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-cart h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .empty-cart p {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .continue-shopping {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .continue-shopping:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                gap: 15px;
+            }
+
+            .item-actions {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 15px;
+            }
+
+            .item-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .recommended-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Success Animation */
+        .success-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(40, 167, 69, 0.95);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 10000;
+            display: none;
+            animation: successPulse 0.6s ease;
+        }
+
+        @keyframes successPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+         .sdw{
+                width: 90px;
+                height: 90px;
+                font-size: 50px;
+                border-radius: 90px;
+                border: white;
+                background-color: rgb(245, 245, 245);
+        }
+        .sdw:hover{
+                background-color: #cacaca;
+                box-shadow: black;
+        }
+        .sdw{
+                transition-duration: 2s;
+        }
+    </style>
+</head>
+<body>
+                <a href="index.html" >
+                <input type="button" value="🔙" class="sdw">
+    </a>
+    <!-- Success Animation -->
+    <div class="success-animation" id="successAnimation">
+        ✅ محصول به سبد خرید اضافه شد!
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>🛒 سبد خرید شما</h1>
+                <p>بررسی و تکمیل خرید محصولات انتخابی</p>
+            </div>
+        </div>
+
+        <!-- Cart Items -->
+        <div class="cart-items">
+            <div class="cart-header">
+                <div class="cart-title">
+                    📦 محصولات انتخابی
+                    <span class="item-count" id="itemCount">5 محصول</span>
+                </div>
+                <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن سبد</button>
+            </div>
+
+            <div id="cartItemsList">
+                <!-- Cart Item 1 -->
+                <div class="cart-item" data-id="1">
+                    <div class="item-image">📱</div>
+                    <div class="item-details">
+                        <div class="item-name">گوشی هوشمند سامسونگ Galaxy S23</div>
+                        <div class="item-description">حافظه 256 گیگابایت، رم 8 گیگابایت، دوربین 50 مگاپیکسل</div>
+                        <div class="item-features">
+                            <span class="feature-tag">گارانتی 18 ماهه</span>
+                            <span class="feature-tag">ارسال رایگان</span>
+                            <span class="feature-tag">پرداخت در محل</span>
+                        </div>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="changeQuantity(1, -1)">-</button>
+                                <input type="number" class="qty-input" value="1" min="1" onchange="updateQuantity(1, this.value)">
+                                <button class="qty-btn" onclick="changeQuantity(1, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="discount-badge">25% تخفیف</div>
+                        <div class="item-price">
+                            18,750,000 تومان
+                            <span class="original-price">25,000,000 تومان</span>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(1)">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Cart Item 2 -->
+                <div class="cart-item" data-id="2">
+                    <div class="item-image">💻</div>
+                    <div class="item-details">
+                        <div class="item-name">لپ‌تاپ ایسوس VivoBook Pro</div>
+                        <div class="item-description">پردازنده Intel Core i7، رم 16 گیگابایت، SSD 512 گیگابایت</div>
+                        <div class="item-features">
+                            <span class="feature-tag">گارانتی 2 ساله</span>
+                            <span class="feature-tag">ارسال فوری</span>
+                        </div>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="changeQuantity(2, -1)">-</button>
+                                <input type="number" class="qty-input" value="1" min="1" onchange="updateQuantity(2, this.value)">
+                                <button class="qty-btn" onclick="changeQuantity(2, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="discount-badge">15% تخفیف</div>
+                        <div class="item-price">
+                            29,750,000 تومان
+                            <span class="original-price">35,000,000 تومان</span>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(2)">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Cart Item 3 -->
+                <div class="cart-item" data-id="3">
+                    <div class="item-image">🎧</div>
+                    <div class="item-details">
+                        <div class="item-name">هدفون بی‌سیم سونی WH-1000XM5</div>
+                        <div class="item-description">حذف نویز فعال، باتری 30 ساعته، کیفیت صدای Hi-Res</div>
+                        <div class="item-features">
+                            <span class="feature-tag">ضد آب</span>
+                            <span class="feature-tag">شارژ سریع</span>
+                        </div>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="changeQuantity(3, -1)">-</button>
+                                <input type="number" class="qty-input" value="2" min="1" onchange="updateQuantity(3, this.value)">
+                                <button class="qty-btn" onclick="changeQuantity(3, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="discount-badge">30% تخفیف</div>
+                        <div class="item-price">
+                            7,000,000 تومان
+                            <span class="original-price">10,000,000 تومان</span>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(3)">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Cart Item 4 -->
+                <div class="cart-item" data-id="4">
+                    <div class="item-image">⌚</div>
+                    <div class="item-details">
+                        <div class="item-name">ساعت هوشمند اپل واچ Series 9</div>
+                        <div class="item-description">GPS + Cellular، بدنه آلومینیوم، بند اسپورت، سایز 45mm</div>
+                        <div class="item-features">
+                            <span class="feature-tag">ضد آب</span>
+                            <span class="feature-tag">GPS</span>
+                            <span class="feature-tag">ECG</span>
+                        </div>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="changeQuantity(4, -1)">-</button>
+                                <input type="number" class="qty-input" value="1" min="1" onchange="updateQuantity(4, this.value)">
+                                <button class="qty-btn" onclick="changeQuantity(4, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="discount-badge">20% تخفیف</div>
+                        <div class="item-price">
+                            12,000,000 تومان
+                            <span class="original-price">15,000,000 تومان</span>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(4)">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Cart Item 5 -->
+                <div class="cart-item" data-id="5">
+                    <div class="item-image">📷</div>
+                    <div class="item-details">
+                        <div class="item-name">دوربین کانن EOS R6 Mark II</div>
+                        <div class="item-description">سنسور 24.2 مگاپیکسل، فیلمبرداری 4K، لرزشگیر داخلی</div>
+                        <div class="item-features">
+                            <span class="feature-tag">گارانتی 2 ساله</span>
+                            <span class="feature-tag">لنز رایگان</span>
+                        </div>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="changeQuantity(5, -1)">-</button>
+                                <input type="number" class="qty-input" value="1" min="1" onchange="updateQuantity(5, this.value)">
+                                <button class="qty-btn" onclick="changeQuantity(5, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="discount-badge">10% تخفیف</div>
+                        <div class="item-price">
+                            81,000,000 تومان
+                            <span class="original-price">90,000,000 تومان</span>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(5)">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <div class="summary-title">
+                💰 خلاصه سفارش
+            </div>
+
+            <div class="summary-row">
+                <span class="summary-label">قیمت کالاها (6 محصول)</span>
+                <span class="summary-value" id="subtotal">175,000,000 تومان</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="summary-label">تخفیف محصولات</span>
+                <span class="summary-value discount-value" id="productDiscount">-26,500,000 تومان</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="summary-label">هزینه ارسال</span>
+                <span class="summary-value" id="shipping">رایگان</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="summary-label">تخفیف کد تخفیف</span>
+                <span class="summary-value discount-value" id="couponDiscount">-2,000,000 تومان</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="summary-label">مالیات بر ارزش افزوده</span>
+                <span class="summary-value" id="tax">14,650,000 تومان</span>
+            </div>
+
+            <div class="summary-row">
+                <span>مبلغ قابل پرداخت</span>
+                <span id="total">161,150,000 تومان</span>
+            </div>
+
+            <!-- Discount Code Section -->
+            <div class="discount-section">
+                <div class="discount-input">
+                    <input type="text" id="discountCode" placeholder="کد تخفیف را وارد کنید">
+                    <button class="apply-btn" onclick="applyDiscount()">اعمال</button>
+                </div>
+                <div class="suggested-codes">
+                    <span class="code-suggestion" onclick="applyCode('WELCOME20')">WELCOME20</span>
+                    <span class="code-suggestion" onclick="applyCode('SAVE15')">SAVE15</span>
+                    <span class="code-suggestion" onclick="applyCode('MEGA50')">MEGA50</span>
+                </div>
+            </div>
+
+            <button class="checkout-btn" onclick="proceedToCheckout()">
+                🚀 ادامه فرآیند خرید
+            </button>
+
+            <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">
+                🔒 پرداخت امن و محفوظ
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendations">
+            <h3>💡 پیشنهاد ویژه برای شما</h3>
+            <div class="recommended-items">
+                <div class="recommended-item" onclick="addRecommendedItem(1)">
+                    <div class="item-image">🔋</div>
+                    <div class="item-name">پاور بانک 20000 میلی‌آمپر</div>
+                    <div class="item-price">850,000 تومان</div>
+                    <button class="add-to-cart-btn">افزودن به سبد</button>
+                </div>
+                <div class="recommended-item" onclick="addRecommendedItem(2)">
+                    <div class="item-image">📱</div>
+                    <div class="item-name">کاور محافظ گوشی</div>
+                    <div class="item-price">120,000 تومان</div>
+                    <button class="add-to-cart-btn">افزودن به سبد</button>
+                </div>
+                <div class="recommended-item" onclick="addRecommendedItem(3)">
+                    <div class="item-image">🔌</div>
+                    <div class="item-name">شارژر بی‌سیم</div>
+                    <div class="item-price">450,000 تومان</div>
+                    <button class="add-to-cart-btn">افزودن به سبد</button>
+                </div>
+                <div class="recommended-item" onclick="addRecommendedItem(4)">
+                    <div class="item-image">🎮</div>
+                    <div class="item-name">دسته بازی بلوتوث</div>
+                    <div class="item-price">680,000 تومان</div>
+                    <button class="add-to-cart-btn">افزودن به سبد</button>
+                </div>
+                <div class="recommended-item" onclick="addRecommendedItem(5)">
+                    <div class="item-image">💾</div>
+                    <div class="item-name">فلش مموری 64 گیگابایت</div>
+                    <div class="item-price">180,000 تومان</div>
+                    <button class="add-to-cart-btn">افزودن به سبد</button>
+                </div>
+                <div class="recommended-item" onclick="addRecommendedItem(6)">
+                    <div class="item-image">🖱️</div>
+                    <div class="item-name">ماوس بی‌سیم</div>
+                    <div class="item-price">320,000 تومان</div>
+                    <button class="add-to-cart-btn">افزودن به سبد</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cart data
+        let cartItems = [
+            { id: 1, name: 'گوشی هوشمند سامسونگ Galaxy S23', price: 18750000, originalPrice: 25000000, quantity: 1 },
+            { id: 2, name: 'لپ‌تاپ ایسوس VivoBook Pro', price: 29750000, originalPrice: 35000000, quantity: 1 },
+            { id: 3, name: 'هدفون بی‌سیم سونی WH-1000XM5', price: 7000000, originalPrice: 10000000, quantity: 2 },
+            { id: 4, name: 'ساعت هوشمند اپل واچ Series 9', price: 12000000, originalPrice: 15000000, quantity: 1 },
+            { id: 5, name: 'دوربین کانن EOS R6 Mark II', price: 81000000, originalPrice: 90000000, quantity: 1 }
+        ];
+
+        let appliedCoupon = 'SAVE15';
+        let couponDiscount = 2000000;
+
+        // Update quantity
+        function changeQuantity(itemId, change) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                item.quantity = Math.max(1, item.quantity + change);
+                updateCartDisplay();
+            }
+        }
+
+        function updateQuantity(itemId, newQuantity) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                item.quantity = Math.max(1, parseInt(newQuantity));
+                updateCartDisplay();
+            }
+        }
+
+        // Remove item
+        function removeItem(itemId) {
+            if (confirm('آیا مطمئن هستید که می‌خواهید این محصول را از سبد خرید حذف کنید؟')) {
+                cartItems = cartItems.filter(item => item.id !== itemId);
+                document.querySelector(`[data-id="${itemId}"]`).style.animation = 'slideOutLeft 0.3s ease';
+                setTimeout(() => {
+                    updateCartDisplay();
+                }, 300);
+            }
+        }
+
+        // Clear cart
+        function clearCart() {
+            if (confirm('آیا مطمئن هستید که می‌خواهید تمام محصولات را از سبد خرید حذف کنید؟')) {
+                cartItems = [];
+                updateCartDisplay();
+            }
+        }
+
+        // Apply discount code
+        function applyDiscount() {
+            const code = document.getElementById('discountCode').value.toUpperCase();
+            applyCode(code);
+        }
+
+        function applyCode(code) {
+            document.getElementById('discountCode').value = code;
+            
+            const discountCodes = {
+                'WELCOME20': 3000000,
+                'SAVE15': 2000000,
+                'MEGA50': 5000000,
+                'NEWUSER': 1500000,
+                'SPECIAL30': 4000000
+            };
+
+            if (discountCodes[code]) {
+                appliedCoupon = code;
+                couponDiscount = discountCodes[code];
+                showSuccessMessage(`کد تخفیف ${code} با موفقیت اعمال شد!`);
+                updateCartDisplay();
+            } else {
+                alert('کد تخفیف وارد شده معتبر نیست.');
+            }
+        }
+
+        // Add recommended item
+        function addRecommendedItem(itemId) {
+            const recommendedItems = [
+                { id: 101, name: 'پاور بانک 20000 میلی‌آمپر', price: 850000, originalPrice: 1000000 },
+                { id: 102, name: 'کاور محافظ گوشی', price: 120000, originalPrice: 150000 },
+                { id: 103, name: 'شارژر بی‌سیم', price: 450000, originalPrice: 500000 },
+                { id: 104, name: 'دسته بازی بلوتوث', price: 680000, originalPrice: 800000 },
+                { id: 105, name: 'فلش مموری 64 گیگابایت', price: 180000, originalPrice: 220000 },
+                { id: 106, name: 'ماوس بی‌سیم', price: 320000, originalPrice: 400000 }
+            ];
+
+            const item = recommendedItems[itemId - 1];
+            const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cartItems.push({ ...item, quantity: 1 });
+            }
+
+            showSuccessMessage('محصول به سبد خرید اضافه شد!');
+            updateCartDisplay();
+        }
+
+        // Show success message
+        function showSuccessMessage(message) {
+            const successAnimation = document.getElementById('successAnimation');
+            successAnimation.textContent = `✅ ${message}`;
+            successAnimation.style.display = 'block';
+            
+            setTimeout(() => {
+                successAnimation.style.display = 'none';
+            }, 2000);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            // Update item count
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('itemCount').textContent = `${totalItems} محصول`;
+
+            // Update quantity inputs
+            cartItems.forEach(item => {
+                const qtyInput = document.querySelector(`[data-id="${item.id}"] .qty-input`);
+                if (qtyInput) {
+                    qtyInput.value = item.quantity;
+                }
+            });
+
+            // Calculate totals
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const originalSubtotal = cartItems.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+            const productDiscount = originalSubtotal - subtotal;
+            const tax = Math.floor(subtotal * 0.09); // 9% tax
+            const total = subtotal - couponDiscount + tax;
+
+            // Update summary
+            document.getElementById('subtotal').textContent = formatPrice(originalSubtotal);
+            document.getElementById('productDiscount').textContent = `-${formatPrice(productDiscount)}`;
+            document.getElementById('couponDiscount').textContent = `-${formatPrice(couponDiscount)}`;
+            document.getElementById('tax').textContent = formatPrice(tax);
+            document.getElementById('total').textContent = formatPrice(total);
+
+            // Show empty cart if no items
+            if (cartItems.length === 0) {
+                showEmptyCart();
+            }
+        }
+
+        // Format price
+        function formatPrice(price) {
+            return price.toLocaleString('fa-IR') + ' تومان';
+        }
+
+        // Show empty cart
+        function showEmptyCart() {
+            const cartItemsList = document.getElementById('cartItemsList');
+            cartItemsList.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h3>سبد خرید شما خالی است</h3>
+                    <p>هنوز محصولی به سبد خرید خود اضافه نکرده‌اید.<br>برای مشاهده محصولات به فروشگاه بروید.</p>
+                    <button class="continue-shopping" onclick="window.location.reload()">🛍️ ادامه خرید</button>
+                </div>
+            `;
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            if (cartItems.length === 0) {
+                alert('سبد خرید شما خالی است!');
+                return;
+            }
+
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) - couponDiscount + Math.floor(cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.09);
+            
+            if (confirm(`آیا مطمئن هستید که می‌خواهید با مبلغ ${formatPrice(total)} به مرحله پرداخت بروید؟`)) {
+                showSuccessMessage('در حال انتقال به صفحه پرداخت...');
+                setTimeout(() => {
+                    alert('🎉 سفارش شما با موفقیت ثبت شد!\n\nکد پیگیری: ZK-2024-001234\nزمان تحویل: 2-3 روز کاری\n\nبا تشکر از خرید شما! 🙏');
+                }, 2000);
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartDisplay();
+
+            // Add CSS animation for slide out
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideOutLeft {
+                    from {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                    to {
+                        opacity: 0;
+                        transform: translateX(-100%);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95fc3decc06bd295',t:'MTc1MjYxMzc3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

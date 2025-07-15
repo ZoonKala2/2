@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اعلان‌های ویژه - زون کالا</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IRANSans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ef394e, #ff6b7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .header-title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ef394e;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Notifications Grid */
+        .notifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .notification-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            animation: slideInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .notification-card:nth-child(1) { animation-delay: 0.1s; }
+        .notification-card:nth-child(2) { animation-delay: 0.2s; }
+        .notification-card:nth-child(3) { animation-delay: 0.3s; }
+        .notification-card:nth-child(4) { animation-delay: 0.4s; }
+        .notification-card:nth-child(5) { animation-delay: 0.5s; }
+        .notification-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .notification-card:hover::before {
+            opacity: 1;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        /* Discount Badge */
+        .discount-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .badge-percentage { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .badge-amount { background: linear-gradient(135deg, #4834d4, #686de0); }
+        .badge-special { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        .badge-mega { background: linear-gradient(135deg, #ff9ff3, #f368e0); }
+
+        /* Card Content */
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-left: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .card-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Discount Code */
+        .discount-code {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .code-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .code-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+
+        /* Timer */
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer-item {
+            background: linear-gradient(135deg, #ef394e, #ff6b7a);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 45px;
+        }
+
+        .timer-number {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .timer-label {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        /* Action Button */
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Special Effects */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .notifications-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef394e, #ff6b7a);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(239, 57, 78, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(239, 57, 78, 0.6);
+        }
+        .sdw{
+                width: 90px;
+                height: 90px;
+                font-size: 50px;
+                border-radius: 90px;
+                border: #667eea;
+                background:linear-gradient(to right, #667eea, rgb(121, 5, 136))
+        }
+        .sdw:hover{
+                background-color: #cacaca;
+                box-shadow: black;
+        }
+        .sdw{
+                transition-duration: 2s;
+        }
+    </style>
+</head>
+<body>
+                 <a href="index.html" >
+                <input type="button" value="🔙" class="sdw">
+    </a>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">زون کالا</a>
+            <div class="header-title">
+                <h1>🎉 اعلان‌های ویژه و تخفیف‌های شگفت‌انگیز 🎉</h1>
+                <p class="header-subtitle">بهترین پیشنهادات و کدهای تخفیف منحصر به فرد</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button class="action-btn" style="width: auto; padding: 8px 16px;">🔔 اعلان‌ها</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">24</div>
+                <div class="stat-label">پیشنهاد ویژه</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">80%</div>
+                <div class="stat-label">حداکثر تخفیف</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">900K</div>
+                <div class="stat-label">حداکثر مبلغ تخفیف</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">⏰</div>
+                <div class="stat-label">محدود به زمان</div>
+            </div>
+        </div>
+
+        <!-- Notifications Grid -->
+        <div class="notifications-grid">
+            <!-- Notification 1 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">80%<br>تخفیف</div>
+                <div class="sparkle" style="top: 20px; right: 100px; animation-delay: 0s;"></div>
+                <div class="sparkle" style="top: 60px; right: 50px; animation-delay: 0.5s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🔥</div>
+                    <div>
+                        <div class="card-title">فروش ویژه الکترونیک</div>
+                        <div class="card-subtitle">محدود به 100 نفر اول</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 80 درصدی روی تمام محصولات الکترونیکی! از گوشی هوشمند تا لپ‌تاپ و تبلت. فرصت طلایی برای خرید ارزان.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('ELECTRONIC80')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">ELECTRONIC80</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">05</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">23</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">45</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🛒 خرید با تخفیف</button>
+            </div>
+
+            <!-- Notification 2 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">900K<br>تومان</div>
+                <div class="sparkle" style="top: 30px; right: 80px; animation-delay: 0.2s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">👗</div>
+                    <div>
+                        <div class="card-title">مد و پوشاک لوکس</div>
+                        <div class="card-subtitle">برندهای معتبر جهانی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 900 هزار تومانی روی خرید بالای 2 میلیون تومان از بخش مد و پوشاک. شامل برندهای معتبر و لوکس.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('FASHION900')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">FASHION900</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">12</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">08</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">30</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">✨ مشاهده کالکشن</button>
+            </div>
+
+            <!-- Notification 3 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">65%<br>تخفیف</div>
+                <div class="sparkle" style="top: 40px; right: 120px; animation-delay: 0.8s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🏠</div>
+                    <div>
+                        <div class="card-title">خانه و آشپزخانه</div>
+                        <div class="card-subtitle">لوازم خانگی برقی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    65 درصد تخفیف روی تمام لوازم خانگی برقی. از یخچال و ماشین لباسشویی تا ریز لوازم آشپزخانه.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('HOME65')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">HOME65</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">08</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">45</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">12</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🏡 خرید لوازم خانگی</button>
+            </div>
+
+            <!-- Notification 4 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">750K<br>تومان</div>
+                <div class="sparkle" style="top: 25px; right: 90px; animation-delay: 0.3s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">📚</div>
+                    <div>
+                        <div class="card-title">کتاب و لوازم تحریر</div>
+                        <div class="card-subtitle">مجموعه کامل آموزشی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 750 هزار تومانی برای خرید بالای 1.5 میلیون تومان کتاب و لوازم تحریر. شامل کتاب‌های درسی و داستان.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('BOOK750')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">BOOK750</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">15</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">30</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">55</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">📖 مطالعه کتاب‌ها</button>
+            </div>
+
+            <!-- Notification 5 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">70%<br>تخفیف</div>
+                <div class="sparkle" style="top: 35px; right: 110px; animation-delay: 0.6s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">⚽</div>
+                    <div>
+                        <div class="card-title">ورزش و سرگرمی</div>
+                        <div class="card-subtitle">تجهیزات ورزشی حرفه‌ای</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    70 درصد تخفیف روی تمام تجهیزات ورزشی! از لباس ورزشی تا وسایل بدنسازی و ورزش‌های آبی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('SPORT70')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">SPORT70</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">06</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">15</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">20</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🏃‍♂️ خرید تجهیزات ورزشی</button>
+            </div>
+
+            <!-- Notification 6 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">600K<br>تومان</div>
+                <div class="sparkle" style="top: 50px; right: 70px; animation-delay: 0.4s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">💄</div>
+                    <div>
+                        <div class="card-title">آرایشی و بهداشتی</div>
+                        <div class="card-subtitle">محصولات اورجینال</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 600 هزار تومانی برای خرید بالای 1.2 میلیون تومان محصولات آرایشی و بهداشتی اورجینال.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('BEAUTY600')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">BEAUTY600</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">09</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">42</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">18</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">💅 خرید محصولات زیبایی</button>
+            </div>
+
+            <!-- Notification 7 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">55%<br>تخفیف</div>
+                <div class="sparkle" style="top: 20px; right: 130px; animation-delay: 0.7s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🚗</div>
+                    <div>
+                        <div class="card-title">خودرو و موتورسیکلت</div>
+                        <div class="card-subtitle">لوازم یدکی اورجینال</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    55 درصد تخفیف روی تمام لوازم یدکی خودرو و موتورسیکلت. شامل روغن موتور، لاستیک و قطعات یدکی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('AUTO55')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">AUTO55</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">18</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">25</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">40</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🔧 خرید لوازم یدکی</button>
+            </div>
+
+            <!-- Notification 8 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">450K<br>تومان</div>
+                <div class="sparkle" style="top: 45px; right: 85px; animation-delay: 0.1s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🍎</div>
+                    <div>
+                        <div class="card-title">مواد غذایی و نوشیدنی</div>
+                        <div class="card-subtitle">محصولات ارگانیک</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 450 هزار تومانی برای خرید بالای 900 هزار تومان مواد غذایی ارگانیک و نوشیدنی‌های طبیعی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('FOOD450')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">FOOD450</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">07</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">33</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">25</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🥗 خرید مواد غذایی</button>
+            </div>
+
+            <!-- Notification 9 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">40%<br>تخفیف</div>
+                <div class="sparkle" style="top: 30px; right: 95px; animation-delay: 0.9s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🧸</div>
+                    <div>
+                        <div class="card-title">کودک و نوزاد</div>
+                        <div class="card-subtitle">اسباب‌بازی آموزشی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    40 درصد تخفیف روی تمام محصولات کودک و نوزاد. از لباس و کفش تا اسباب‌بازی‌های آموزشی و تفریحی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('KIDS40')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">KIDS40</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">14</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">18</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">50</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">👶 خرید محصولات کودک</button>
+            </div>
+
+            <!-- Notification 10 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">350K<br>تومان</div>
+                <div class="sparkle" style="top: 55px; right: 75px; animation-delay: 0.5s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">💍</div>
+                    <div>
+                        <div class="card-title">طلا و جواهرات</div>
+                        <div class="card-subtitle">طراحی‌های منحصر به فرد</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 350 هزار تومانی برای خرید بالای 700 هزار تومان طلا و جواهرات با طراحی‌های مدرن و کلاسیک.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('GOLD350')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">GOLD350</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">11</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">55</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">35</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">💎 مشاهده جواهرات</button>
+            </div>
+
+            <!-- Notification 11 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">75%<br>تخفیف</div>
+                <div class="sparkle" style="top: 25px; right: 105px; animation-delay: 0.2s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🎮</div>
+                    <div>
+                        <div class="card-title">بازی و سرگرمی</div>
+                        <div class="card-subtitle">کنسول و بازی‌های جدید</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    75 درصد تخفیف روی تمام کنسول‌های بازی، بازی‌های ویدیویی و لوازم جانبی گیمینگ. فرصت استثنایی!
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('GAMING75')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">GAMING75</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">04</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">12</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">08</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🕹️ خرید بازی و کنسول</button>
+            </div>
+
+            <!-- Notification 12 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">800K<br>تومان</div>
+                <div class="sparkle" style="top: 40px; right: 115px; animation-delay: 0.8s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🏡</div>
+                    <div>
+                        <div class="card-title">مبلمان و دکوراسیون</div>
+                        <div class="card-subtitle">طراحی مدرن و کلاسیک</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 800 هزار تومانی برای خرید بالای 1.6 میلیون تومان مبلمان و وسایل دکوراسیون خانه.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('FURNITURE800')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">FURNITURE800</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">20</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">45</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">15</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🛋️ خرید مبلمان</button>
+            </div>
+
+            <!-- Notification 13 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">30%<br>تخفیف</div>
+                <div class="sparkle" style="top: 35px; right: 125px; animation-delay: 0.3s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🌱</div>
+                    <div>
+                        <div class="card-title">باغبانی و گیاهان</div>
+                        <div class="card-subtitle">گیاهان آپارتمانی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    30 درصد تخفیف روی تمام گیاهان آپارتمانی، ابزار باغبانی و کودهای طبیعی. فضای سبز خانه‌تان را زیبا کنید.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('GARDEN30')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">GARDEN30</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">16</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">28</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">42</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🌿 خرید گیاهان</button>
+            </div>
+
+            <!-- Notification 14 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">250K<br>تومان</div>
+                <div class="sparkle" style="top: 50px; right: 60px; animation-delay: 0.6s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🎵</div>
+                    <div>
+                        <div class="card-title">موسیقی و آلات موسیقی</div>
+                        <div class="card-subtitle">ساز و آهنگ</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 250 هزار تومانی برای خرید بالای 500 هزار تومان آلات موسیقی، هدفون و سیستم‌های صوتی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('MUSIC250')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">MUSIC250</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">13</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">37</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">22</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🎸 خرید آلات موسیقی</button>
+            </div>
+
+            <!-- Notification 15 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">60%<br>تخفیف</div>
+                <div class="sparkle" style="top: 20px; right: 140px; animation-delay: 0.4s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">📷</div>
+                    <div>
+                        <div class="card-title">عکاسی و فیلمبرداری</div>
+                        <div class="card-subtitle">دوربین حرفه‌ای</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    60 درصد تخفیف روی تمام دوربین‌های عکاسی، فیلمبرداری و لوازم جانبی. برای عکاسان حرفه‌ای و آماتور.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('CAMERA60')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">CAMERA60</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">08</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">52</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">38</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">📸 خرید دوربین</button>
+            </div>
+
+            <!-- Notification 16 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">150K<br>تومان</div>
+                <div class="sparkle" style="top: 45px; right: 90px; animation-delay: 0.7s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🧳</div>
+                    <div>
+                        <div class="card-title">چمدان و کیف سفر</div>
+                        <div class="card-subtitle">برای سفرهای راحت</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 150 هزار تومانی برای خرید بالای 300 هزار تومان چمدان، کیف سفر و لوازم مسافرتی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('TRAVEL150')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">TRAVEL150</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">22</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">15</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">48</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">✈️ خرید لوازم سفر</button>
+            </div>
+
+            <!-- Notification 17 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">45%<br>تخفیف</div>
+                <div class="sparkle" style="top: 30px; right: 100px; animation-delay: 0.1s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🔧</div>
+                    <div>
+                        <div class="card-title">ابزار و تجهیزات</div>
+                        <div class="card-subtitle">ابزار حرفه‌ای</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    45 درصد تخفیف روی تمام ابزار دستی، برقی و تجهیزات صنعتی. برای حرفه‌ای‌ها و علاقه‌مندان.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('TOOLS45')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">TOOLS45</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">10</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">20</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">33</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🔨 خرید ابزار</button>
+            </div>
+
+            <!-- Notification 18 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">500K<br>تومان</div>
+                <div class="sparkle" style="top: 55px; right: 80px; animation-delay: 0.9s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">💻</div>
+                    <div>
+                        <div class="card-title">کامپیوتر و لپ‌تاپ</div>
+                        <div class="card-subtitle">تکنولوژی پیشرفته</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 500 هزار تومانی برای خرید بالای 1 میلیون تومان کامپیوتر، لپ‌تاپ و لوازم جانبی کامپیوتر.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('COMPUTER500')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">COMPUTER500</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">06</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">48</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">12</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">💾 خرید کامپیوتر</button>
+            </div>
+
+            <!-- Notification 19 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">25%<br>تخفیف</div>
+                <div class="sparkle" style="top: 25px; right: 110px; animation-delay: 0.5s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🏥</div>
+                    <div>
+                        <div class="card-title">سلامت و پزشکی</div>
+                        <div class="card-subtitle">تجهیزات پزشکی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    25 درصد تخفیف روی تمام تجهیزات پزشکی، مکمل‌های غذایی و وسایل سلامتی خانگی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('HEALTH25')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">HEALTH25</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">19</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">35</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🩺 خرید تجهیزات پزشکی</button>
+            </div>
+
+            <!-- Notification 20 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">200K<br>تومان</div>
+                <div class="sparkle" style="top: 40px; right: 120px; animation-delay: 0.2s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🎨</div>
+                    <div>
+                        <div class="card-title">هنر و صنایع دستی</div>
+                        <div class="card-subtitle">آثار هنری منحصر به فرد</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 200 هزار تومانی برای خرید بالای 400 هزار تومان آثار هنری، صنایع دستی و لوازم نقاشی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('ART200')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">ART200</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">15</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">42</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">28</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🖼️ خرید آثار هنری</button>
+            </div>
+
+            <!-- Notification 21 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">50%<br>تخفیف</div>
+                <div class="sparkle" style="top: 35px; right: 130px; animation-delay: 0.8s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🐾</div>
+                    <div>
+                        <div class="card-title">حیوانات خانگی</div>
+                        <div class="card-subtitle">غذا و لوازم حیوانات</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    50 درصد تخفیف روی تمام غذا، اسباب‌بازی و لوازم مراقبتی حیوانات خانگی. برای دوستان چهارپای شما.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('PETS50')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">PETS50</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">12</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">25</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">55</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🐕 خرید لوازم حیوانات</button>
+            </div>
+
+            <!-- Notification 22 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-amount">100K<br>تومان</div>
+                <div class="sparkle" style="top: 50px; right: 65px; animation-delay: 0.3s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🎪</div>
+                    <div>
+                        <div class="card-title">تفریح و سرگرمی</div>
+                        <div class="card-subtitle">بازی‌های خانوادگی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    تخفیف 100 هزار تومانی برای خرید بالای 200 هزار تومان بازی‌های خانوادگی، پازل و سرگرمی‌های گروهی.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('FUN100')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">FUN100</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">17</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">38</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">44</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🎲 خرید بازی‌ها</button>
+            </div>
+
+            <!-- Notification 23 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-percentage">35%<br>تخفیف</div>
+                <div class="sparkle" style="top: 20px; right: 150px; animation-delay: 0.6s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🌟</div>
+                    <div>
+                        <div class="card-title">محصولات ویژه</div>
+                        <div class="card-subtitle">کالاهای منحصر به فرد</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    35 درصد تخفیف روی مجموعه‌ای از محصولات ویژه و منحصر به فرد که فقط در زون کالا پیدا می‌کنید.
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('SPECIAL35')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">SPECIAL35</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">21</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">12</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">36</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">⭐ مشاهده محصولات ویژه</button>
+            </div>
+
+            <!-- Notification 24 -->
+            <div class="notification-card">
+                <div class="discount-badge badge-special">MEGA<br>SALE</div>
+                <div class="sparkle" style="top: 30px; right: 70px; animation-delay: 0.4s;"></div>
+                <div class="sparkle" style="top: 50px; right: 120px; animation-delay: 0.7s;"></div>
+                <div class="sparkle" style="top: 15px; right: 140px; animation-delay: 0.1s;"></div>
+                <div class="card-header">
+                    <div class="card-icon">🎉</div>
+                    <div>
+                        <div class="card-title">مگا فروش ویژه</div>
+                        <div class="card-subtitle">تخفیف 50 هزار تومانی</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    مگا فروش ویژه با تخفیف 50 هزار تومانی برای اولین خرید! شامل تمام دسته‌بندی‌ها. فرصت محدود!
+                </div>
+                <div class="discount-code">
+                    <button class="copy-btn" onclick="copyCode('MEGA50')">کپی</button>
+                    <div class="code-label">کد تخفیف</div>
+                    <div class="code-value">MEGA50</div>
+                </div>
+                <div class="timer">
+                    <div class="timer-item">
+                        <span class="timer-number">02</span>
+                        <span class="timer-label">ساعت</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">58</span>
+                        <span class="timer-label">دقیقه</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="timer-number">17</span>
+                        <span class="timer-label">ثانیه</span>
+                    </div>
+                </div>
+                <button class="action-btn">🚀 شروع خرید</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="scrollToTop()">⬆️</button>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 8 + 4;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Copy discount code
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                // Show success message
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#667eea';
+                }, 1500);
+                
+                // Show toast notification
+                showToast(`کد تخفیف ${code} کپی شد!`);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #28a745, #20c997);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-weight: bold;
+                animation: slideInRight 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Update timers
+        function updateTimers() {
+            const timerItems = document.querySelectorAll('.timer-number');
+            timerItems.forEach(item => {
+                let currentValue = parseInt(item.textContent);
+                if (currentValue > 0) {
+                    currentValue--;
+                    item.textContent = currentValue.toString().padStart(2, '0');
+                } else {
+                    // Reset timer when it reaches 0
+                    item.textContent = Math.floor(Math.random() * 24).toString().padStart(2, '0');
+                }
+            });
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // Update timers every second
+            setInterval(updateTimers, 1000);
+            
+            // Add stagger animation to cards
+            const cards = document.querySelectorAll('.notification-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.1) + 's';
+            });
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.notification-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95fc1ace8139995d',t:'MTc1MjYxMjMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

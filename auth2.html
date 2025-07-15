@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>ورود</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, #e72f2f, #a51717);
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 25s infinite ease-in-out;
+      z-index: 0;
+    }
+    .bubble1 { width: 200px; height: 200px; background: #fff; top: 5%; left: 10%; animation-delay: 0s; }
+    .bubble2 { width: 300px; height: 300px; background: #fff; bottom: 10%; right: 15%; animation-delay: 4s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-60px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+
+    .glass {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      padding: 2rem;
+      color: white;
+      z-index: 10;
+    }
+
+    .link-style {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #sendCodeBtn {
+      background-color: #22c55e;
+    }
+
+    #sendCodeBtn:disabled {
+      background-color: #16a34a;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center relative">
+  <!-- Bubbles -->
+  <div class="bubble bubble1"></div>
+  <div class="bubble bubble2"></div>
+
+  <!-- Form -->
+  <div class="glass max-w-md w-full relative z-10">
+    <h1 class="text-3xl mb-6 font-bold text-center">ورود</h1>
+    <form id="loginForm" autocomplete="off">
+      <label>نام</label>
+      <input id="name" type="text" required placeholder="نام" class="w-full p-2 rounded-xl mb-3 bg-white bg-opacity-20 text-white placeholder-white">
+
+      <label>ایمیل</label>
+      <input id="email" type="email" required placeholder="ایمیل" class="w-full p-2 rounded-xl mb-3 bg-white bg-opacity-20 text-white placeholder-white">
+
+      <label>کد تایید</label>
+      <div class="flex items-center gap-2 mb-3">
+        <input id="verificationCode" type="text" maxlength="6" required placeholder="123456" class="flex-1 p-2 rounded-xl bg-white bg-opacity-20 text-white placeholder-white">
+        <button id="sendCodeBtn" type="button" class="text-white font-bold py-2 px-4 rounded-xl">ارسال کد</button>
+      </div>
+
+      <p id="codeStatus" class="text-sm text-green-300 mb-3 hidden"></p>
+
+      <button type="submit" class="w-full py-2 bg-white text-red-800 font-bold rounded-xl">ورود</button>
+    </form>
+
+    <p class="mt-4 text-center text-white">حساب ندارید؟ <a href="auth.html" class="link-style">ثبت نام</a></p>
+  </div>
+
+  <script>
+    let generatedCode = '';
+    let codeExpiry = 0;
+
+    document.getElementById('sendCodeBtn').addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const status = document.getElementById('codeStatus');
+      const btn = document.getElementById('sendCodeBtn');
+
+      if (!email) {
+        status.textContent = 'ایمیل را وارد کنید';
+        status.style.display = 'block';
+        status.className = 'text-red-400 mb-3';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'لطفاً 3 ثانیه صبر کنید...';
+      setTimeout(() => {
+        generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+        codeExpiry = Date.now() + 60000;
+        status.textContent = `کد شما: ${generatedCode}`;
+        status.className = 'text-green-400 mb-3';
+        status.style.display = 'block';
+
+        let countdown = 59;
+        btn.textContent = `ارسال مجدد کد (${countdown})`;
+        const interval = setInterval(() => {
+          countdown--;
+          if (countdown <= 0) {
+            clearInterval(interval);
+            btn.disabled = false;
+            btn.textContent = 'ارسال کد';
+          } else {
+            btn.textContent = `ارسال مجدد کد (${countdown})`;
+          }
+        }, 1000);
+      }, 3000);
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const inputCode = document.getElementById('verificationCode').value.trim();
+      const name = document.getElementById('name').value.trim();
+
+      if (!generatedCode || Date.now() > codeExpiry || inputCode !== generatedCode) {
+        alert('کد اشتباه یا منقضی شده');
+        return;
+      }
+
+      localStorage.setItem('userFullName', name);
+      alert('ورود موفق');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
